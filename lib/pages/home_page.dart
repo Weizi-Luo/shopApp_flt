@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-22 15:28:11
- * @LastEditTime: 2020-10-29 15:03:44
+ * @LastEditTime: 2020-10-29 16:38:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_app/lib/pages/home_page.dart
@@ -10,6 +10,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../config/httpHeaders.dart';
 import '../service/service_method.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,64 +41,56 @@ String homePageContent = "正在获取数据";
       child:Scaffold(
         appBar: AppBar(title: Text("TT商城"),),
 
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              TextField(
-                controller:typeController,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  labelText: "礼物类型",
-                  helperText: "请输入喜欢的类型"
-                  ),
-                  autofocus: false,
-              ),
-              RaisedButton(
-                onPressed: _btnClick,
-                child: Text("选择完毕"),
-              ),
-              Text(
-                showtext,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 10,
-              )
-            ],
-            ),
+        body: FutureBuilder(
+          future: getHomePageContent(),
+          builder: (context,snapshot) {
+            if(snapshot.hasData) {
+              var data = json.decode(snapshot.data.toString());
+              List<Map> swiper = (data['data']['slides'] as List).cast();
+              return Column(
+                children: <Widget>[
+                  SwiperDiy()
+                ],
+              );
+            }else {
+              return Center(
+                child:       SwiperDiy()
+              );
+            }
+          },
+
         ),
       )
     );
   }
-
-void _btnClick() {
-  print('开始选择');
-  if(typeController.text.toString() == "")  {
-    showDialog(
-      context: context,
-      builder: (context) =>AlertDialog(title:Text("不能为空"))
-    );
-  } else {
-    getHttp().then((value) => {
-      setState((){
-        print(value);
-        showtext = value.toString();
-      })
-    });
-  }
-
 }
 
-  Future getHttp() async {
-    try{
-      // var data = {"name":TypeText},
-      Response response;
-      Dio dio = new Dio();
-      dio.options.headers = httpHeaders;
-      response = await dio.get("https://www.baidu.com/");
-        // queryParameters: data
-      // print(response.data);
-      return response.data;
-    }catch(e){
-      print(e);
-    }
+
+// 首页轮播组件
+class SwiperDiy extends StatelessWidget {
+
+  // final List swiperDateList;
+  // SwiperDiy({this.swiperDateList});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 333,
+      child: Swiper(
+        itemBuilder: (BuildContext context,int index){
+          return new Image.network("http://via.placeholder.com/350x150",fit: BoxFit.fill,);
+        },
+        itemCount: 3,
+        pagination: new SwiperPagination(),
+        control: new SwiperControl(),
+
+        // itemBuilder: (BuildContext context, int index){
+        //   return Image.network("${swiperDateList[index]['image']}");
+        // },
+        // itemCount: swiperDateList.length,
+        // pagination: SwiperPagination(),
+        // autoplay: true,
+      ),
+    );
   }
 }
