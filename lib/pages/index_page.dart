@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-10-22 11:24:15
+ * @LastEditTime: 2020-10-29 17:08:14
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /my_app/lib/pages/index_page.dart
+ */
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +13,7 @@ import 'home_page.dart';
 import 'cart_page.dart';
 import 'category_page.dart';
 import 'member_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
@@ -51,6 +60,7 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: Size(750, 1334), allowFontScaling: false);
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
       bottomNavigationBar: BottomNavigationBar(
