@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-10-22 15:28:11
- * @LastEditTime: 2020-10-30 10:48:37
+ * @LastEditTime: 2020-10-30 14:11:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /my_app/lib/pages/home_page.dart
@@ -152,7 +152,7 @@ class LeaderPhone extends StatelessWidget {
           children: <Widget>[
             RaisedButton(
               onPressed: _launchURL,
-              child: Text("选择完毕"),            
+              child: Text("点击call"),            
             ),
           ],
         ),
